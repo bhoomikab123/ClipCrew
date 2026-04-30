@@ -1,35 +1,28 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+    <Tabs screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarStyle: { backgroundColor: '#0F172A' },
+      tabBarActiveTintColor: '#6366F1',
+      tabBarInactiveTintColor: 'gray',
+      tabBarIcon: ({ color, size }) => {
+        let iconName = 'home-outline';
+
+        if (route.name === 'index') iconName = 'home-outline';
+        else if (route.name === 'events') iconName = 'calendar-outline';
+        else if (route.name === 'crew') iconName = 'people-outline';
+        else if (route.name === 'profile') iconName = 'person-outline';
+
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}>
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="events" />
+      <Tabs.Screen name="crew" />
+      <Tabs.Screen name="profile" />
     </Tabs>
   );
 }
